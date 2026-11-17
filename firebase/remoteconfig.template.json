@@ -1,0 +1,26 @@
+{
+  "parameters": {
+    "kavach_alert": {
+      "defaultValue": {
+        "value": "Fake traffic e-challan messages with payment links are common. Check any challan only on echallan.parivahan.gov.in."
+      },
+      "description": "Banner text shown at the top of Kavach. Empty hides it.",
+      "valueType": "STRING"
+    },
+    "kavach_rules": {
+      "defaultValue": {
+        "value": "[{\"id\": \"echallan\", \"weight\": 2, \"pattern\": \"(e-?challan|traffic (fine|challan))[\\\\s\\\\S]{0,120}?(pay|link|http|click)\", \"en\": \"Talks about a traffic e-challan with a payment link. Check challans only on echallan.parivahan.gov.in.\", \"hi\": \"ई-चालान भरने का लिंक भेजा गया है। चालान सिर्फ़ echallan.parivahan.gov.in पर देखें।\"}, {\"id\": \"loan_app\", \"weight\": 2, \"pattern\": \"(instant|pre-?approved)\\\\s+loan[^.\\\\n]{0,60}(download|install|app|link)\", \"en\": \"Offers an instant or pre-approved loan through an app or link. Fake loan apps steal contacts and harass borrowers.\", \"hi\": \"ऐप या लिंक से तुरंत/प्री-अप्रूव्ड लोन का ऑफ़र है। नकली लोन ऐप संपर्क चुराते और परेशान करते हैं।\"}]"
+      },
+      "description": "Extra red-flag rules: id, weight 1-3, pattern (regex), en, hi.",
+      "valueType": "JSON"
+    },
+    "kavach_shorteners": {
+      "defaultValue": {
+        "value": "[\"shorturl.gg\", \"linkz.ink\"]"
+      },
+      "description": "Extra link-shortener hosts to flag.",
+      "valueType": "JSON"
+    }
+  },
+  "version": {}
+}
