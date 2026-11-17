@@ -218,7 +218,9 @@ export class KavachPage {
         this.status("Preparing the on-device model…");
         await this.ai.prepareDevice((value) => this.status(`Downloading the on-device model: ${Math.round(value * 100)}%`));
         this.status("Checking on this device…");
-        const parts = [KavachPage.prompt(run.text, run.code.flags)];
+        // The small on-device model tends to echo hint ids back, so it gets the message
+        // alone; the code's findings are shown beside its answer anyway.
+        const parts = [KavachPage.prompt(run.text, [])];
         if (this.image) {
           parts.push(await KavachPage.imagePart(this.image));
         }
@@ -357,8 +359,10 @@ export class KavachPage {
 
     $("#explanation").textContent = run.ai?.answer.explanation || "";
     KavachPage.fillList($("#todo"), run.ai?.answer.what_to_do?.length ? run.ai.answer.what_to_do : KavachPage.defaultSteps(finalLevel));
-    KavachPage.fillList($("#ai-flags"), run.ai?.answer.red_flags || []);
-    $("#ai-flags-box").hidden = !run.ai?.answer.red_flags?.length;
+    const codeIds = new Set(run.code.flags.map((flag) => flag.id));
+    const aiFlags = (run.ai?.answer.red_flags || []).filter((flag) => !codeIds.has(flag) && !/^[a-z]+(_[a-z]+)+$/.test(flag));
+    KavachPage.fillList($("#ai-flags"), aiFlags);
+    $("#ai-flags-box").hidden = !aiFlags.length;
 
     const codeList = $("#code-flags");
     codeList.replaceChildren();
