@@ -1,6 +1,6 @@
 // Keeps Kavach's own files available offline, so the code checks and the on-device AI
 // work without a network. Firebase and Google requests are never cached here.
-const CACHE = "kavach-v1";
+const CACHE = "kavach-v2";
 const FILES = ["./", "./index.html", "./styles.css", "./dist/app.js", "./icon.svg", "./manifest.webmanifest"];
 
 self.addEventListener("install", (event) => {

@@ -27,7 +27,7 @@ itself a privacy risk. Kavach keeps it on the device.
 | **Structured output** | A JSON Schema via `onDeviceParams.promptOptions.responseConstraint` on the device, and `responseSchema` in the cloud: verdict, scam type, explanation, red flags, steps. |
 | **`inferenceSource`** | Every result shows where it ran (`on_device` or `in_cloud`) and how long it took. |
 | **`initializeDeviceModel`** | Called on the Check click, with download progress shown. |
-| **App Check** | reCAPTCHA v3 protects the Gemini API from abuse (enforced for AI Logic). |
+| **App Check** | reCAPTCHA Enterprise (Fraud Defense) protects the Gemini API from abuse (enforced for AI Logic). |
 | **Remote Config** | A scam-alert banner and extra red-flag rules (for example fake e-challan and loan-app patterns) and link shorteners update without a new release. Template: [`firebase/remoteconfig.template.json`](firebase/remoteconfig.template.json). |
 
 ## Code checks the AI can't overrule
