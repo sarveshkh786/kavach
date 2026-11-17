@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kavach — private scam check for SMS and WhatsApp</title>
+  <meta name="description" content="Paste a suspicious SMS, WhatsApp message or screenshot. Kavach checks it with Gemini Nano on your own device, so your messages stay private, and explains what to do.">
+  <meta name="theme-color" content="#0f3d3e">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="dist/app.js"></script>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap top-inner">
+      <p class="brand"><span aria-hidden="true">🛡️</span> Kavach <span class="brand-hi" lang="hi">कवच</span></p>
+      <p id="device-status" class="pill" role="status">Checking for on-device AI…</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" aria-labelledby="title">
+      <h1 id="title">Got a strange message?<br><span>Check it before you click.</span></h1>
+      <p class="lede">Paste an SMS, WhatsApp message or email, or drop a screenshot. Kavach checks it with AI that runs <strong>on your own device</strong>, so the messages people send you stay private. If your device has no on-device AI, Kavach masks your OTPs, account, card, Aadhaar and phone numbers before it asks the cloud.</p>
+    </section>
+
+    <p id="alert" class="alert" role="status" hidden><strong>Scam alert:</strong> <span id="alert-text"></span></p>
+    <p id="setup-note" class="alert" hidden>The AI check is not set up on this copy. The code checks below still work.</p>
+
+    <section class="card checker" aria-labelledby="check-heading">
+      <h2 id="check-heading" class="sr-only">Check a message</h2>
+      <label for="message">Message</label>
+      <textarea id="message" rows="6" maxlength="4000" placeholder="Paste the message here, or paste a screenshot (Ctrl+V)…"></textarea>
+      <div class="samples" role="group" aria-label="Try a sample">
+        <span>Try:</span>
+        <button type="button" data-sample="kyc">Fake KYC</button>
+        <button type="button" data-sample="arrest">“Digital arrest”</button>
+        <button type="button" data-sample="task">Task job</button>
+        <button type="button" data-sample="power">Power cut</button>
+        <button type="button" data-sample="otp">Real OTP</button>
+        <button type="button" data-sample="family">Family</button>
+      </div>
+      <div class="image-row">
+        <label class="file-label" for="screenshot">📷 Add a screenshot</label>
+        <input id="screenshot" type="file" accept="image/png,image/jpeg">
+        <span id="image-note" class="note"></span>
+      </div>
+      <div id="image-box" class="image-box" hidden>
+        <img id="image-preview" alt="The screenshot to check">
+        <button id="clear-image" type="button" class="ghost">Remove</button>
+      </div>
+
+      <fieldset class="modes">
+        <legend>Where may the AI run?</legend>
+        <label><input type="radio" name="mode" value="private"> <strong>Private</strong> <span>Only on this device. Never sent anywhere.</span></label>
+        <label><input type="radio" name="mode" value="auto" checked> <strong>Auto</strong> <span>This device first; masked cloud only if needed.</span></label>
+        <label><input type="radio" name="mode" value="cloud"> <strong>Cloud</strong> <span>Masked text to the cloud, for phones and older PCs.</span></label>
+      </fieldset>
+      <button id="check" type="button" class="primary">Check this message</button>
+      <p id="input-note" class="note" role="status"></p>
+      <p id="progress" class="progress" role="status" hidden></p>
+    </section>
+
+    <section id="result" class="card result" aria-live="polite" hidden>
+      <div class="verdict-row">
+        <div>
+          <p id="verdict" class="verdict"></p>
+          <p id="verdict-hi" class="verdict-hi" lang="hi"></p>
+        </div>
+        <p id="scam-type" class="scam-type"></p>
+      </div>
+      <p id="source" class="source"></p>
+      <p id="explanation" class="explanation"></p>
+      <p id="ai-error" class="ai-error" role="status" hidden></p>
+      <div id="image-cloud-box" class="consent" hidden>
+        <p>This device has no on-device AI, and a screenshot can't be masked. Send the screenshot to the cloud model to read it?</p>
+        <button id="send-image-cloud" type="button" class="primary small">Send screenshot to cloud</button>
+      </div>
+
+      <div class="columns">
+        <div>
+          <h3>What to do</h3>
+          <ol id="todo"></ol>
+        </div>
+        <div>
+          <div class="flags-head">
+            <h3>Code found <span id="code-count">0</span> red flags</h3>
+            <button id="lang-toggle" type="button" class="ghost small" lang="hi">हिन्दी में देखें</button>
+          </div>
+          <ul id="code-flags" class="code-flags"></ul>
+          <p id="code-none" class="note">No known scam patterns in the text.</p>
+          <div id="ai-flags-box">
+            <h3>AI also noticed</h3>
+            <ul id="ai-flags"></ul>
+          </div>
+        </div>
+      </div>
+
+      <details id="masked-box" class="masked" hidden>
+        <summary>Exactly what was sent to the cloud</summary>
+        <pre id="masked-text"></pre>
+      </details>
+
+      <div id="report" class="report">
+        <p><strong>Got this message but lost no money?</strong> Report it on <a href="https://sancharsaathi.gov.in/sfc/" rel="noopener">Chakshu (Sanchar Saathi)</a>.</p>
+        <p><strong>Already lost money?</strong> Call <a href="tel:1930">1930</a> right away, or file at <a href="https://cybercrime.gov.in" rel="noopener">cybercrime.gov.in</a>.</p>
+      </div>
+      <p id="sdk-source" class="sdk-source"></p>
+    </section>
+
+    <section class="card how" aria-labelledby="how-heading">
+      <h2 id="how-heading">How Kavach keeps your messages private</h2>
+      <ol class="steps">
+        <li><strong>Code checks first, always.</strong> Plain code looks for OTP and PIN requests, "enter PIN to receive", lookalike bank links, short links, APK installs, "digital arrest", task jobs and more, in English and Hindi. It works offline, and the AI can raise the risk but never lower it.</li>
+        <li><strong>Gemini Nano on your device.</strong> On Chrome for desktop, Firebase AI Logic runs the AI check with the on-device model. The message never leaves your computer, works offline and costs nothing.</li>
+        <li><strong>Masked cloud fallback.</strong> On phones and older PCs, Kavach first replaces OTPs, account, card, Aadhaar, PAN, phone numbers, emails and UPI names with labels, then asks Gemini in the cloud. You can see exactly what was sent.</li>
+        <li><strong>Fresh scam patterns.</strong> New scam rules and alerts arrive through Firebase Remote Config, without an app update.</li>
+      </ol>
+      <p class="note">Kavach is a helper, not a guarantee. When in doubt, don't click, don't pay, and call the bank or office on its official number.</p>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <p>Built with Firebase AI Logic (hybrid inference), App Check and Remote Config. <a href="https://github.com/sarveshkh786/kavach" rel="noopener">Source on GitHub</a> · Apache-2.0</p>
+  </footer>
+</body>
+</html>
