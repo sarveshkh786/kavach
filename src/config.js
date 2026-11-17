@@ -9,7 +9,7 @@ export const FIREBASE_CONFIG = {
   appId: "1:352363182443:web:4f824543f3d6710a51f42e",
 };
 
-// reCAPTCHA v3 site key registered with Firebase App Check for this site's domain.
+// reCAPTCHA (Fraud Defense / Enterprise) site key registered with Firebase App Check.
 export const RECAPTCHA_SITE_KEY = "6LfLAiUuAAAAALYGj48NlC0hfQJ6NioXmwIqF9Sm";
 
 // The cloud model used only when this device has no on-device model.

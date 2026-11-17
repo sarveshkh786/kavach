@@ -6,7 +6,7 @@
 // the full text to the cloud. Kavach keeps two models, one ONLY_ON_DEVICE and one
 // ONLY_IN_CLOUD, tries the device first, and masks the message before any cloud call.
 import { initializeApp } from "firebase/app";
-import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
 import { getAI, getGenerativeModel, GoogleAIBackend, InferenceMode, Schema } from "firebase/ai";
 import { fetchAndActivate, getRemoteConfig, getValue } from "firebase/remote-config";
 import { CLOUD_MODEL, FIREBASE_CONFIG, RECAPTCHA_SITE_KEY } from "./config.js";
@@ -77,7 +77,7 @@ export class KavachAI {
     }
     this.app = initializeApp(FIREBASE_CONFIG);
     this.appCheck = initializeAppCheck(this.app, {
-      provider: new ReCaptchaV3Provider(RECAPTCHA_SITE_KEY),
+      provider: new ReCaptchaEnterpriseProvider(RECAPTCHA_SITE_KEY),
       isTokenAutoRefreshEnabled: true,
     });
     this.ai = getAI(this.app, { backend: new GoogleAIBackend() });
